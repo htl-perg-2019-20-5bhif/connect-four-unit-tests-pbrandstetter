@@ -1,7 +1,5 @@
 ﻿using ConnectFour.Logic;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace ConnectFour.Test
@@ -159,9 +157,9 @@ namespace ConnectFour.Test
                 b.SetStone(i);
             }
 
-            var result = b.SetStone(3);
-            Assert.Throws<InvalidCastException>(() => b.SetStone(6));
+            b.SetStone(3);
 
+            Assert.Throws<InvalidOperationException>(() => b.SetStone(6));
         }
     }
 }

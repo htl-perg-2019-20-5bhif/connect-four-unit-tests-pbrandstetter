@@ -4,9 +4,10 @@ namespace ConnectFour.Logic
 {
     public class GameBoard
     {
-        private readonly byte[,] board = new byte[7, 6];
+        public readonly byte[,] board = new byte[7, 6];
         internal bool playerOne = true;
         private int numMoves;
+        private bool gameOver = false;
 
         private byte CheckForDiagonalWinLLtUR(byte column, byte row)
         {
@@ -116,24 +117,18 @@ namespace ConnectFour.Logic
 
         public byte SetStone(byte column)
         {
-            var gameOver = false;
+            if (gameOver)
+            {
+                throw new InvalidOperationException("Game already over");
+            }
 
-            if (column > board.GetLength(0))
+            if (column > 6)
             {
                 throw new ArgumentOutOfRangeException(nameof(column));
             }
-            for (byte row = 0; row < 6 && !gameOver; row++)
-            {
-                if (gameOver)
-                {
-                    throw new InvalidOperationException("Game is over");
-                }
-                
-                if (column > 6)
-                {
-                    throw new InvalidOperationException("Column is full");
-                }
 
+            for (byte row = 0; row < 6; row++)
+            {
                 if (board[column, row] == 0)
                 {
                     board[column, row] = playerOne ? (byte)1 : (byte)2;
@@ -145,15 +140,15 @@ namespace ConnectFour.Logic
                         if (numMoves == 42)
                         {
                             gameOver = true;
-                                throw new InvalidOperationException("Table is full");
-                            
+                            throw new InvalidOperationException("Table is full");
                         }
                         return winner;
                     }
-                    gameOver = false;
+                    gameOver = true;
                     return winner;
                 }
             }
+            throw new InvalidOperationException("Column is full");
         }
     }
 }
