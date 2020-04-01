@@ -5,8 +5,8 @@ namespace ConnectFour.Logic
     public class GameBoard
     {
         public readonly byte[,] board = new byte[7, 6];
-        internal bool playerOne = true;
-        private int numMoves;
+        public bool playerOne = true;
+        public int numMoves;
         private bool gameOver = false;
 
         private byte CheckForDiagonalWinLLtUR(byte column, byte row)
@@ -149,6 +149,13 @@ namespace ConnectFour.Logic
                 }
             }
             throw new InvalidOperationException("Column is full");
+        }
+
+        public byte[,] GetBoard()
+        {
+            var destination = new byte[7, 6];
+            Array.Copy(board, 0, destination, 0, board.Length);
+            return destination;
         }
     }
 }
